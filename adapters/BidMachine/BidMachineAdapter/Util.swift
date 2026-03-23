@@ -87,22 +87,31 @@ final class Util {
   /// Retrieves the root view controller of the current key window. If it is not available, returns
   /// nil.
   @MainActor static func rootViewController() -> UIViewController? {
-    var viewController: UIViewController?
-    // If failed to find the closest view controller, then find the app's root
-    // view controller
-    if #available(iOS 13.0, *) {
-      let activeScene =
-        UIApplication.shared.connectedScenes
-        .filter { $0.activationState == .foregroundActive }
-        .first(where: { $0 is UIWindowScene }) as? UIWindowScene
+    let rootViewController: UIViewController?
 
-      let keyWindow = activeScene?.windows.first(where: { $0.isKeyWindow })
-      viewController = keyWindow?.rootViewController
+    if #available(iOS 13.0, *) {
+      let windowScene = UIApplication.shared.connectedScenes
+        .compactMap { $0 as? UIWindowScene }
+        .first(where: { $0.activationState == .foregroundActive })
+        ?? UIApplication.shared.connectedScenes
+          .compactMap { $0 as? UIWindowScene }
+          .first(where: { $0.activationState == .foregroundInactive })
+
+      if #available(iOS 15.0, *) {
+        rootViewController = windowScene?.keyWindow?.rootViewController
+      } else {
+        rootViewController = windowScene?.windows.first(where: { $0.isKeyWindow })?.rootViewController
+      }
     } else {
-      viewController = UIApplication.shared.keyWindow?.rootViewController
+      rootViewController = UIApplication.shared.keyWindow?.rootViewController
     }
 
-    return viewController
+    var topController = rootViewController
+    while let presented = topController?.presentedViewController {
+      topController = presented
+    }
+
+    return topController
   }
 
 }
