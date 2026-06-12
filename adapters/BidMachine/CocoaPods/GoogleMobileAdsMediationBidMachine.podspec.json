@@ -12,19 +12,15 @@
   "platforms": {
     "ios": "13.0"
   },
-  "vendored_frameworks": [
-    "BidMachineAdapter-3.7.1.0/GoogleBidMachineAdapter.xcframework"
-  ],
+  "source_files": "adapters/BidMachine/BidMachineAdapter/**/*.swift",
   "dependencies": {
-    "Google-Mobile-Ads-SDK": "~> 13.3",
+    "Google-Mobile-Ads-SDK": "13.0.0",
     "BidMachine": "3.7.1"
   },
-  "preserve_paths": [
-    "BidMachineAdapter-3.7.1.0/README.md"
-  ],
   "requires_arc": true,
   "source": {
-    "http": "https://dl.google.com/googleadmobadssdk/mediation/ios/BidMachine/BidMachineAdapter-3.7.1.0.zip"
+    "git": "https://github.com/bidmachine/googleads-mobile-ios-mediation.git",
+    "tag": "3.7.1.0"
   },
   "static_framework": true,
   "swift_version": "5.0"

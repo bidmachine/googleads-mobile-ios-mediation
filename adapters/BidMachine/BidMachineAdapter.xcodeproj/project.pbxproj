@@ -62,6 +62,7 @@
 		ADFB2A882DC346AF005EBC7F /* InterstitialAdLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADFA84AA2C17704300A501AB /* InterstitialAdLoader.swift */; };
 		ADFB2A892DC346AF005EBC7F /* BidMachineAdapterExtras.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADFA84A72C17704300A501AB /* BidMachineAdapterExtras.swift */; };
 		ADFB2A8A2DC346AF005EBC7F /* BidMachineClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA2F7D22D9DBF0A005D9ECA /* BidMachineClient.swift */; };
+		FFF2EE151F0EDDE4D4074C69 /* Pods_Default_AdapterWithoutValidationScript.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F166DBF2B40BD3F56859573A /* Pods_Default_AdapterWithoutValidationScript.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -127,6 +128,9 @@
 		ADFA84BC2C17704300A501AB /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
 		ADFA84D42C17738E00A501AB /* GoogleBidMachineAdapter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GoogleBidMachineAdapter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ADFB2A902DC346AF005EBC7F /* StaticGoogleBidMachineAdapter.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = StaticGoogleBidMachineAdapter.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C6E576A8BABB35953E9DA858 /* Pods-Default-AdapterWithoutValidationScript.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Default-AdapterWithoutValidationScript.debug.xcconfig"; path = "Target Support Files/Pods-Default-AdapterWithoutValidationScript/Pods-Default-AdapterWithoutValidationScript.debug.xcconfig"; sourceTree = "<group>"; };
+		DA72073B09A1C5231944D236 /* Pods-Default-AdapterWithoutValidationScript.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Default-AdapterWithoutValidationScript.release.xcconfig"; path = "Target Support Files/Pods-Default-AdapterWithoutValidationScript/Pods-Default-AdapterWithoutValidationScript.release.xcconfig"; sourceTree = "<group>"; };
+		F166DBF2B40BD3F56859573A /* Pods_Default_AdapterWithoutValidationScript.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Default_AdapterWithoutValidationScript.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,6 +138,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FFF2EE151F0EDDE4D4074C69 /* Pods_Default_AdapterWithoutValidationScript.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -161,6 +166,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		37321455A62157C81020EA90 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F166DBF2B40BD3F56859573A /* Pods_Default_AdapterWithoutValidationScript.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		AD23672D2C176DB300997FF7 = {
 			isa = PBXGroup;
 			children = (
@@ -170,6 +183,8 @@
 				ADFA84B92C17704300A501AB /* BuildScript */,
 				ADFA84B52C17704300A501AB /* Configuration */,
 				ADFA849E2C176E2200A501AB /* Products */,
+				C194EE2955A2E21D207890E7 /* Pods */,
+				37321455A62157C81020EA90 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -221,6 +236,16 @@
 			path = BuildScript;
 			sourceTree = "<group>";
 		};
+		C194EE2955A2E21D207890E7 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C6E576A8BABB35953E9DA858 /* Pods-Default-AdapterWithoutValidationScript.debug.xcconfig */,
+				DA72073B09A1C5231944D236 /* Pods-Default-AdapterWithoutValidationScript.release.xcconfig */,
+			);
+			name = Pods;
+			path = ../../AdapterUnitTests/Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -228,6 +253,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = AD6E3A182EA167F700818296 /* Build configuration list for PBXNativeTarget "AdapterWithoutValidationScript" */;
 			buildPhases = (
+				D8B398A8596F505E5BF1841D /* [CP] Check Pods Manifest.lock */,
 				AD6E3A0B2EA167F700818296 /* Sources */,
 				AD6E3A162EA167F700818296 /* Frameworks */,
 				AD6E3A172EA167F700818296 /* CopyFiles */,
@@ -382,6 +408,28 @@
 			shellPath = /bin/sh;
 			shellScript = "set -o errexit\nset -o nounset\nset -o xtrace\n\nbash \"${SRCROOT}/BuildScript/Script_Validate.sh\"\n";
 		};
+		D8B398A8596F505E5BF1841D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Default-AdapterWithoutValidationScript-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -478,6 +526,7 @@
 		};
 		AD6E3A192EA167F700818296 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C6E576A8BABB35953E9DA858 /* Pods-Default-AdapterWithoutValidationScript.debug.xcconfig */;
 			buildSettings = {
 				AD_NETWORK_NAME = BidMachine;
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -563,6 +612,7 @@
 		};
 		AD6E3A1A2EA167F700818296 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DA72073B09A1C5231944D236 /* Pods-Default-AdapterWithoutValidationScript.release.xcconfig */;
 			buildSettings = {
 				AD_NETWORK_NAME = BidMachine;
 				ALWAYS_SEARCH_USER_PATHS = NO;

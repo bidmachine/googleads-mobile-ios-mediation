@@ -1,7 +1,8 @@
 ## BidMachine iOS Mediation Adapter Changelog
 
 #### Next Version
-- Update the minimum iOS version to relax Google Mobile Ads SDK dependency to allow minor versions.
+- Pinned Google-Mobile-Ads-SDK dependency to version 13.0.0 for compatibility with apps that cannot upgrade beyond GMA 13.0.0.
+- Removed COPPA forwarding via `ageRestrictedTreatment` (introduced in GMA 13.3.0). COPPA state is forwarded from `tagForChildDirectedTreatment` and `tagForUnderAgeOfConsent` only.
 
 #### [Version 3.7.1.0](https://dl.google.com/googleadmobadssdk/mediation/ios/bidmachine/BidMachineAdapter-3.7.1.0.zip)
 - Verified compatibility with BidMachine SDK version 3.7.1.
