@@ -358,26 +358,22 @@ final class BidMachineClientImpl: NSObject, BidMachineClient {
 extension GoogleMobileAds.AdFormat {
 
   fileprivate func toBiddingPlacementFormat(size: AdSize?) throws(BidMachineAdapterError)
-    -> PlacementFormat
-  {
-    switch self {
-    case .banner:
-      guard let size else {
-        throw BidMachineAdapterError(
-          errorCode: .invalidRTBRequestParameters,
-          description: "Banner ad format requires ad size.")
+    -> PlacementFormat {
+        switch self {
+        case .banner:
+          guard let size else {
+            return .banner
+          }
+          return try size.toBiddingPlacementFormat()
+        case .interstitial: return .interstitial
+        case .rewarded: return .rewarded
+        case .native: return .native
+        default:
+          throw BidMachineAdapterError(
+            errorCode: .invalidRTBRequestParameters,
+            description: "Unsupported ad format. Provided format: \(self).")
+        }
       }
-      return try size.toBiddingPlacementFormat()
-    case .interstitial: return .interstitial
-    case .rewarded: return .rewarded
-    case .native: return .native
-    default:
-      throw BidMachineAdapterError(
-        errorCode: .invalidRTBRequestParameters,
-        description: "Unsupported ad format. Provided format: \(self).")
-    }
-  }
-
 }
 
 extension GoogleMobileAds.AdSize {
