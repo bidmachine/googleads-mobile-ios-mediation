@@ -2,6 +2,9 @@
 
 #### Next Version
 - Update the minimum iOS version to relax Google Mobile Ads SDK dependency to allow minor versions.
+- Fixed bidding banner requests made with a width of 0 when Google provides no usable ad size
+  (fluid and multi-size ad units). The screen width is requested instead, so the BidMachine SDK
+  no longer rejects every bid payload for such units.
 
 #### [Version 3.7.1.0](https://dl.google.com/googleadmobadssdk/mediation/ios/bidmachine/BidMachineAdapter-3.7.1.0.zip)
 - Verified compatibility with BidMachine SDK version 3.7.1.

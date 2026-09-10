@@ -425,9 +425,12 @@ extension GoogleMobileAds.AdFormat {
   {
     switch self {
     case .banner:
-      // A missing size is not an error: an adaptive banner with no size restriction is
-      // requested instead.
-      return size?.toBiddingAdFormat() ?? .bannerAdaptive(width: 0, maxHeight: 0)
+      guard let size else {
+        throw BidMachineAdapterError(
+          errorCode: .invalidRTBRequestParameters,
+          description: "Banner ad format requires ad size.")
+      }
+      return size.toBiddingAdFormat()
     case .interstitial: return .interstitial
     case .rewarded: return .rewarded
     case .native: return .native
@@ -467,8 +470,9 @@ extension GoogleMobileAds.AdSize {
   /// Maps an ad size to a BidMachine ad format for bidding requests.
   ///
   /// The requested size is always passed to BidMachine as an adaptive banner with the requested
-  /// width and maximum height, and the server picks the creative size. A dimension of 0 means
-  /// that dimension is not restricted.
+  /// width and maximum height, and the server picks the creative size. A height of 0 leaves the
+  /// height unrestricted. The width must be positive - the BidMachine SDK accepts no payload for a
+  /// width of 0 - so callers resolve the size through `Util.biddingBannerAdSize` first.
   fileprivate func toBiddingAdFormat() -> BidMachine.AdFormat {
     return .bannerAdaptive(
       width: UInt32(max(0, self.size.width)), maxHeight: UInt32(max(0, self.size.height)))
