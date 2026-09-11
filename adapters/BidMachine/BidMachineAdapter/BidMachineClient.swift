@@ -162,6 +162,11 @@ final class BidMachineClientImpl: NSObject, BidMachineClient {
     for adFormat: GoogleMobileAds.AdFormat, size: AdSize?, placementId: String?,
     completionHandler: @escaping (String?) -> Void
   ) throws {
+    if adFormat == .banner {
+      Util.log(
+        "Collecting banner signals with "
+          + (size.map { "size \(Int($0.size.width))x\(Int($0.size.height))" } ?? "no size"))
+    }
     let bidMachineAdFormat = try adFormat.toBiddingAdFormat(size: size)
     let placement = try Self.placement(for: bidMachineAdFormat, placementId: placementId)
     BidMachineSdk.shared.token(placement: placement) { token in
