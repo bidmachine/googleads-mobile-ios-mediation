@@ -330,7 +330,7 @@ final class BidMachineAdapterSignalsCollectionTests {
     requestParams.adSize = AdSizeBanner
 
     let adapter = BidMachineAdapter()
-    await confirmation("wait for the adpater collect signals") { signalsCollectionCompleted in
+    await confirmation("wait for the adapter collect signals") { signalsCollectionCompleted in
       await withCheckedContinuation { continuation in
         adapter.collectSignals(for: requestParams) { signals, error in
           #expect(error == nil)
@@ -355,7 +355,7 @@ final class BidMachineAdapterSignalsCollectionTests {
     requestParams.adSize = AdSizeMediumRectangle
 
     let adapter = BidMachineAdapter()
-    await confirmation("wait for the adpater collect signals") { signalsCollectionCompleted in
+    await confirmation("wait for the adapter collect signals") { signalsCollectionCompleted in
       await withCheckedContinuation { continuation in
         adapter.collectSignals(for: requestParams) { signals, error in
           #expect(error == nil)
@@ -380,7 +380,7 @@ final class BidMachineAdapterSignalsCollectionTests {
     requestParams.adSize = AdSizeLeaderboard
 
     let adapter = BidMachineAdapter()
-    await confirmation("wait for the adpater collect signals") { signalsCollectionCompleted in
+    await confirmation("wait for the adapter collect signals") { signalsCollectionCompleted in
       await withCheckedContinuation { continuation in
         adapter.collectSignals(for: requestParams) { signals, error in
           #expect(error == nil)
@@ -402,7 +402,7 @@ final class BidMachineAdapterSignalsCollectionTests {
     requestParams.configuration = configurations
 
     let adapter = BidMachineAdapter()
-    await confirmation("wait for the adpater collect signals") { signalsCollectionCompleted in
+    await confirmation("wait for the adapter collect signals") { signalsCollectionCompleted in
       await withCheckedContinuation { continuation in
         adapter.collectSignals(for: requestParams) { signals, error in
           #expect(error == nil)
@@ -424,7 +424,7 @@ final class BidMachineAdapterSignalsCollectionTests {
     requestParams.configuration = configurations
 
     let adapter = BidMachineAdapter()
-    await confirmation("wait for the adpater collect signals") { signalsCollectionCompleted in
+    await confirmation("wait for the adapter collect signals") { signalsCollectionCompleted in
       await withCheckedContinuation { continuation in
         adapter.collectSignals(for: requestParams) { signals, error in
           #expect(error == nil)
@@ -446,7 +446,7 @@ final class BidMachineAdapterSignalsCollectionTests {
     requestParams.configuration = configurations
 
     let adapter = BidMachineAdapter()
-    await confirmation("wait for the adpater collect signals") { signalsCollectionCompleted in
+    await confirmation("wait for the adapter collect signals") { signalsCollectionCompleted in
       await withCheckedContinuation { continuation in
         adapter.collectSignals(for: requestParams) { signals, error in
           #expect(error == nil)
@@ -471,7 +471,7 @@ final class BidMachineAdapterSignalsCollectionTests {
     requestParams.configuration = configurations
 
     let adapter = BidMachineAdapter()
-    await confirmation("wait for the adpater collect signals") { signalsCollectionCompleted in
+    await confirmation("wait for the adapter collect signals") { signalsCollectionCompleted in
       await withCheckedContinuation { continuation in
         adapter.collectSignals(for: requestParams) { signals, error in
           #expect(error == nil)
@@ -496,7 +496,7 @@ final class BidMachineAdapterSignalsCollectionTests {
     requestParams.configuration = configurations
 
     let adapter = BidMachineAdapter()
-    await confirmation("wait for the adpater collect signals") { signalsCollectionCompleted in
+    await confirmation("wait for the adapter collect signals") { signalsCollectionCompleted in
       await withCheckedContinuation { continuation in
         adapter.collectSignals(for: requestParams) { signals, error in
           #expect(error == nil)
@@ -519,7 +519,7 @@ final class BidMachineAdapterSignalsCollectionTests {
     requestParams.configuration = configurations
 
     let adapter = BidMachineAdapter()
-    await confirmation("wait for the adpater collect signals") { signalsCollectionCompleted in
+    await confirmation("wait for the adapter collect signals") { signalsCollectionCompleted in
       await withCheckedContinuation { continuation in
         adapter.collectSignals(for: requestParams) { signals, error in
           #expect(error != nil)
