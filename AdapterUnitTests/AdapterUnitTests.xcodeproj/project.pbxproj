@@ -61,6 +61,7 @@
 		AD0D6E4F2AF587FE002C0B60 /* AUTDTExchangeBannerAdTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AD0D6E4E2AF587FE002C0B60 /* AUTDTExchangeBannerAdTests.m */; };
 		AD0D6E612AF5885D002C0B60 /* AUTDTExchangeInterstitialAdTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AD0D6E602AF5885D002C0B60 /* AUTDTExchangeInterstitialAdTests.m */; };
 		AD0D6E632AF5889A002C0B60 /* AUTDTExchangeRewardedAdTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AD0D6E622AF5889A002C0B60 /* AUTDTExchangeRewardedAdTests.m */; };
+		AD0D6E672AF588AA002C0B60 /* AUTDTExchangeNativeAdTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AD0D6E662AF588AA002C0B60 /* AUTDTExchangeNativeAdTests.m */; };
 		AD0D6E9D2AF591B0002C0B60 /* AdapterUnitTestKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD6FA0352A16BF4A007335D2 /* AdapterUnitTestKit.framework */; };
 		AD0D6EAA2AF59517002C0B60 /* AUTIronSourceAdapterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AD0D6EA92AF59517002C0B60 /* AUTIronSourceAdapterTests.m */; };
 		AD0D6EBE2AF596A3002C0B60 /* AUTIronSourceBannerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AD0D6EBD2AF596A3002C0B60 /* AUTIronSourceBannerTests.m */; };
@@ -233,7 +234,7 @@
 		ADAB37C12D23444400D407AB /* MolocoTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADAB37C02D23444000D407AB /* MolocoTestUtils.swift */; };
 		ADCDB9DD2D41BA0B00795B3A /* AmazonAdapterBannerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADCDB9DC2D41BA0000795B3A /* AmazonAdapterBannerTests.swift */; };
 		ADE56ED02E1334E8003FF591 /* ImobileSdkAds.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD5B322F2B9ACB560055FA17 /* ImobileSdkAds.xcframework */; };
-		ADE56ED12E1334E8003FF591 /* libAdapter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AD0D72E42AF81700002C0B60 /* libAdapter.a */; };
+		ADE56ED12E1334E8003FF591 /* libAdapter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AD6E3ABA2EA16B3400818296 /* libAdapter.a */; };
 		ADE56ED22E1334E8003FF591 /* AdapterUnitTestKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD6FA0352A16BF4A007335D2 /* AdapterUnitTestKit.framework */; };
 		ADE56EDC2E1335D2003FF591 /* IMobileAdapterLatencyTests.xctestplan in Resources */ = {isa = PBXBuildFile; fileRef = ADE56EDB2E1335AE003FF591 /* IMobileAdapterLatencyTests.xctestplan */; };
 		ADE56EDD2E1335D6003FF591 /* IMobileAdapterLatencyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = ADE56EDA2E133533003FF591 /* IMobileAdapterLatencyTests.m */; };
@@ -304,6 +305,7 @@
 		CDCA7FA12F841AC30000EF1B /* BuildFile in Sources */ = {isa = PBXBuildFile; };
 		CDD2215A2F7B301300ED9C43 /* libc++.1.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CDD221592F7B301300ED9C43 /* libc++.1.tbd */; };
 		E2E2719D2F3308DA00143B5D /* AUTMaioBannerAdTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E2E2719C2F3308DA00143B5D /* AUTMaioBannerAdTests.m */; };
+		E2E2719F2F3308DA00143B5D /* AUTMaioUtilsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E2E2719E2F3308DA00143B5D /* AUTMaioUtilsTests.m */; };
 		F090AA192D6563F4003DB8CC /* FakeMolocoNativeFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F090AA182D6563F4003DB8CC /* FakeMolocoNativeFactory.swift */; };
 		F090AA1A2D6563F4003DB8CC /* FakeMolocoNativeAd.swift in Sources */ = {isa = PBXBuildFile; fileRef = F090AA172D6563F4003DB8CC /* FakeMolocoNativeAd.swift */; };
 		F090AA1C2D656413003DB8CC /* MolocoNativeAdTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F090AA1B2D656413003DB8CC /* MolocoNativeAdTest.swift */; };
@@ -1284,13 +1286,6 @@
 			remoteGlobalIDString = ADADDD4A2A3252CE00FB60E1;
 			remoteInfo = Adapter;
 		};
-		ADE56EC72E1334E8003FF591 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AD0D72D52AF81700002C0B60 /* IMobileAdapter.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 45E634ED222F1503006EB5A1;
-			remoteInfo = Adapter;
-		};
 		ADE56EC92E1334E8003FF591 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = AD6FA02A2A16BEF3007335D2 /* Project object */;
@@ -1614,6 +1609,7 @@
 		AD0D6E4E2AF587FE002C0B60 /* AUTDTExchangeBannerAdTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AUTDTExchangeBannerAdTests.m; sourceTree = "<group>"; };
 		AD0D6E602AF5885D002C0B60 /* AUTDTExchangeInterstitialAdTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AUTDTExchangeInterstitialAdTests.m; sourceTree = "<group>"; };
 		AD0D6E622AF5889A002C0B60 /* AUTDTExchangeRewardedAdTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AUTDTExchangeRewardedAdTests.m; sourceTree = "<group>"; };
+		AD0D6E662AF588AA002C0B60 /* AUTDTExchangeNativeAdTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AUTDTExchangeNativeAdTests.m; sourceTree = "<group>"; };
 		AD0D6E762AF59116002C0B60 /* IronSourceAdapter.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = IronSourceAdapter.xcodeproj; path = ../adapters/IronSourceAdapter/IronSourceAdapter.xcodeproj; sourceTree = "<group>"; };
 		AD0D6E922AF5917E002C0B60 /* IronSourceAdapterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IronSourceAdapterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD0D6EA92AF59517002C0B60 /* AUTIronSourceAdapterTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AUTIronSourceAdapterTests.m; sourceTree = "<group>"; };
@@ -1847,6 +1843,7 @@
 		CDC3033C2F994F140071A719 /* MaxAdapterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MaxAdapterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDD221592F7B301300ED9C43 /* libc++.1.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.1.tbd"; path = "Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.2.sdk/usr/lib/libc++.1.tbd"; sourceTree = DEVELOPER_DIR; };
 		E2E2719C2F3308DA00143B5D /* AUTMaioBannerAdTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AUTMaioBannerAdTests.m; sourceTree = "<group>"; };
+		E2E2719E2F3308DA00143B5D /* AUTMaioUtilsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AUTMaioUtilsTests.m; sourceTree = "<group>"; };
 		F090AA172D6563F4003DB8CC /* FakeMolocoNativeAd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeMolocoNativeAd.swift; sourceTree = "<group>"; };
 		F090AA182D6563F4003DB8CC /* FakeMolocoNativeFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeMolocoNativeFactory.swift; sourceTree = "<group>"; };
 		F090AA1B2D656413003DB8CC /* MolocoNativeAdTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MolocoNativeAdTest.swift; sourceTree = "<group>"; };
@@ -2542,6 +2539,7 @@
 				E2E2719C2F3308DA00143B5D /* AUTMaioBannerAdTests.m */,
 				AD0D6F5F2AF6F63F002C0B60 /* AUTMaioInterstitialAdTests.m */,
 				AD0D6F612AF6F671002C0B60 /* AUTMaioRewardedAdTests.m */,
+				E2E2719E2F3308DA00143B5D /* AUTMaioUtilsTests.m */,
 				44414CEF2F89A1ED0085DF0B /* placeholder.swift */,
 				44414C9C2F89A1ED0085DF0B /* MaioAdapterTests-Bridging-Header.h */,
 			);
@@ -3095,6 +3093,7 @@
 				AD0D6E4E2AF587FE002C0B60 /* AUTDTExchangeBannerAdTests.m */,
 				AD0D6E602AF5885D002C0B60 /* AUTDTExchangeInterstitialAdTests.m */,
 				AD0D6E622AF5889A002C0B60 /* AUTDTExchangeRewardedAdTests.m */,
+				AD0D6E662AF588AA002C0B60 /* AUTDTExchangeNativeAdTests.m */,
 				CD8568F42F7B444900200808 /* DTExchangeAdapterTests-Bridging-Header.h */,
 			);
 			path = DTExchangeAdapterTests;
@@ -3777,7 +3776,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				ADE56EC62E1334E8003FF591 /* PBXTargetDependency */,
+				AD6E3B162EA16BAF00818296 /* PBXTargetDependency */,
 				ADE56EC82E1334E8003FF591 /* PBXTargetDependency */,
 				ADE56FBF2E1336DD003FF591 /* PBXTargetDependency */,
 			);
@@ -5252,6 +5251,7 @@
 				AD0D6F622AF6F671002C0B60 /* AUTMaioRewardedAdTests.m in Sources */,
 				AD0D6F5E2AF6E903002C0B60 /* AUTMaioAdapterTests.m in Sources */,
 				E2E2719D2F3308DA00143B5D /* AUTMaioBannerAdTests.m in Sources */,
+				E2E2719F2F3308DA00143B5D /* AUTMaioUtilsTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5517,6 +5517,7 @@
 				ADF28D612A4F7C6B0073F909 /* AUTDTExchangeAdapterTests.m in Sources */,
 				AD0D6E4F2AF587FE002C0B60 /* AUTDTExchangeBannerAdTests.m in Sources */,
 				AD0D6E612AF5885D002C0B60 /* AUTDTExchangeInterstitialAdTests.m in Sources */,
+				AD0D6E672AF588AA002C0B60 /* AUTDTExchangeNativeAdTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5913,11 +5914,6 @@
 			isa = PBXTargetDependency;
 			target = AD6FA0342A16BF4A007335D2 /* AdapterUnitTestKit */;
 			targetProxy = ADA2FADF2D9F7715005D9ECA /* PBXContainerItemProxy */;
-		};
-		ADE56EC62E1334E8003FF591 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Adapter;
-			targetProxy = ADE56EC72E1334E8003FF591 /* PBXContainerItemProxy */;
 		};
 		ADE56EC82E1334E8003FF591 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -7200,6 +7196,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
 					"\"$(SRCROOT)/../adapters/LiftoffMonetizeAdapter/LiftoffMonetizeAdapter\"",
 					"\"$(SRCROOT)/../adapters/LiftoffMonetizeAdapter/LiftoffMonetizeAdapter/Bidding\"",
 					"\"$(SRCROOT)/../adapters/LiftoffMonetizeAdapter/Public/Headers\"",
@@ -7271,6 +7268,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
 					"\"$(SRCROOT)/../adapters/LiftoffMonetizeAdapter/LiftoffMonetizeAdapter\"",
 					"\"$(SRCROOT)/../adapters/LiftoffMonetizeAdapter/LiftoffMonetizeAdapter/Bidding\"",
 					"\"$(SRCROOT)/../adapters/LiftoffMonetizeAdapter/Public/Headers\"",
@@ -11536,6 +11534,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
 					"\"$(SRCROOT)/../adapters/LiftoffMonetizeAdapter/LiftoffMonetizeAdapter\"",
 					"\"$(SRCROOT)/../adapters/LiftoffMonetizeAdapter/LiftoffMonetizeAdapter/Bidding\"",
 					"\"$(SRCROOT)/../adapters/LiftoffMonetizeAdapter/Public/Headers\"",
@@ -11606,6 +11605,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
 					"\"$(SRCROOT)/../adapters/LiftoffMonetizeAdapter/LiftoffMonetizeAdapter\"",
 					"\"$(SRCROOT)/../adapters/LiftoffMonetizeAdapter/LiftoffMonetizeAdapter/Bidding\"",
 					"\"$(SRCROOT)/../adapters/LiftoffMonetizeAdapter/Public/Headers\"",
@@ -12283,7 +12283,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -12355,7 +12355,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
