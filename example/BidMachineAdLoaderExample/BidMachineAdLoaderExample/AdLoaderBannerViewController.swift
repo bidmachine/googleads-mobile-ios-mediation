@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import AdSupport
+import AppTrackingTransparency
 import GoogleMobileAds
 import UIKit
 
@@ -52,6 +54,7 @@ final class AdLoaderBannerViewController: UIViewController {
 
   private var adLoader: AdLoader?
   private var bannerView: AdManagerBannerView?
+  private var hasRequestedTracking = false
   private let statusLabel = UILabel()
   private let adContainer = UIView()
 
@@ -60,7 +63,31 @@ final class AdLoaderBannerViewController: UIViewController {
     title = "AdLoader banner"
     view.backgroundColor = .systemBackground
     layout()
-    load()
+  }
+
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    guard !hasRequestedTracking else { return }
+    hasRequestedTracking = true
+    requestTrackingAuthorizationThenLoad()
+  }
+
+  /// Asks for tracking authorization before the first request, so a real device sends its IDFA:
+  /// BidMachine test bidders and the exchange's per-IFA logging are both keyed on it. The prompt
+  /// only appears while the status is undetermined; the IDFA is printed so it can be pasted into a
+  /// Rollouts allocation. A simulator always reports a zero IDFA.
+  private func requestTrackingAuthorizationThenLoad() {
+    let proceed: (ATTrackingManager.AuthorizationStatus) -> Void = { [weak self] status in
+      let idfa = ASIdentifierManager.shared().advertisingIdentifier.uuidString
+      print("[AdLoaderExample] tracking authorization \(status.rawValue), IDFA \(idfa)")
+      DispatchQueue.main.async { self?.load() }
+    }
+    switch ATTrackingManager.trackingAuthorizationStatus {
+    case .notDetermined:
+      ATTrackingManager.requestTrackingAuthorization(completionHandler: proceed)
+    case let status:
+      proceed(status)
+    }
   }
 
   private func load() {

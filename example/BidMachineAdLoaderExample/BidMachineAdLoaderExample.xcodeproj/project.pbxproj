@@ -9,18 +9,18 @@
 /* Begin PBXBuildFile section */
 		BM1300000000000000000000 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BM1000000000000000000000 /* AppDelegate.swift */; };
 		BM1400000000000000000000 /* AdLoaderBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BM1100000000000000000000 /* AdLoaderBannerViewController.swift */; };
-		BM3200000000000000000000 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BM3100000000000000000000 /* SceneDelegate.swift */; };
 		BM2500000000000000000000 /* GoogleBidMachineAdapter in Frameworks */ = {isa = PBXBuildFile; productRef = BM2300000000000000000000 /* GoogleBidMachineAdapter */; };
 		BM2600000000000000000000 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = BM2400000000000000000000 /* GoogleMobileAds */; };
 		BM2900000000000000000000 /* BidMachine in Frameworks */ = {isa = PBXBuildFile; productRef = BM2800000000000000000000 /* BidMachine */; };
+		BM3200000000000000000000 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BM3100000000000000000000 /* SceneDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		BM0200000000000000000000 /* BidMachineAdLoaderExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BidMachineAdLoaderExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BM1000000000000000000000 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BM1100000000000000000000 /* AdLoaderBannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdLoaderBannerViewController.swift; sourceTree = "<group>"; };
-		BM3100000000000000000000 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		BM1200000000000000000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BM3100000000000000000000 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */

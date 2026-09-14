@@ -22,7 +22,10 @@ SDK 3.7.2 exactly as publishers consume it.
    app's Google publisher settings (`getconfig/pubsetting`), so Google applies the same mediation
    configuration: the unit is registered as a banner unit with BidMachine as an SDK bidder and as
    a native unit without it. Swap both to test another publisher.
-3. Run on a device whose IDFA is allowlisted for BidMachine test bidders.
+3. Run on a device whose IDFA is allowlisted for BidMachine test bidders. The app asks for
+   tracking authorization before its first request and prints the IDFA to the console
+   (`tracking authorization 3, IDFA …`); allow it, and use that IDFA for the allowlist and for the
+   exchange's per-IFA logging allocations. A simulator always reports a zero IDFA.
 
 ## Logs
 
