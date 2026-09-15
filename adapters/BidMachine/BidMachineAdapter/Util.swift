@@ -67,13 +67,12 @@ final class Util {
     return sourceId
   }
 
-  /// Resolves the banner size a bidding request is made with.
+  /// Resolves the banner size signals are collected with.
   ///
   /// Google provides no usable size for some banner units: fluid and multi-size units reach signal
-  /// collection with an invalid size, and a fluid size carries no dimensions at load time either.
-  /// The BidMachine SDK holds the bid payload to the requested width, and a width of 0 fits no
-  /// creative at all, so such requests are made with the screen width instead. A missing height
-  /// stays 0, which BidMachine treats as unrestricted.
+  /// collection with an invalid size. A width of 0 in the bid token leaves the exchange nothing to
+  /// auction on, so such requests are made with the screen width instead. A missing height stays
+  /// 0, which BidMachine treats as unrestricted.
   ///
   /// - Returns: The provided size when it is valid and has a positive width, otherwise a size with
   /// the screen width and the provided height, or 0 when there is none.
@@ -84,6 +83,19 @@ final class Util {
     }
     let height = adSize.map { isAdSizeValid(size: $0) ? max(0, $0.size.height) : 0 } ?? 0
     return adSizeFor(cgSize: CGSize(width: UIScreen.main.bounds.width, height: height))
+  }
+
+  /// The banner size an RTB load is made with: the screen width, the height left open.
+  ///
+  /// Google sizes the load request from the ad unit's primary size, not from the size the bid
+  /// declared, while the payload describes the creative the exchange actually built. The BidMachine
+  /// SDK holds the payload to the load request - the payload may be no wider - so a multi-size unit
+  /// whose primary size is narrower than the creative would refuse every payload. Requesting the
+  /// screen width lets any payload that fits the screen load; the ad is still laid out in the view
+  /// Google provides.
+  @MainActor
+  static func bannerLoadAdSize() -> AdSize {
+    return adSizeFor(cgSize: CGSize(width: UIScreen.main.bounds.width, height: 0))
   }
 
   /// Retrieves a placement ID from the provided mediation ad configuration.

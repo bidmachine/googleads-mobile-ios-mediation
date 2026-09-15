@@ -8,6 +8,10 @@
   no longer rejects every bid payload for such units.
 - The `ageRestrictedTreatment` flag is forwarded to BidMachine's COPPA API again on Google Mobile
   Ads SDKs that provide it, while the adapter keeps building against 13.0.0.
+- Bidding banner ads are loaded with the screen width and the height left open. Google sizes the
+  load request from the ad unit's primary size whatever size the bid declared, and the BidMachine
+  SDK holds the payload to that request, so a creative wider than the primary size of a multi-size
+  unit was refused on the device.
 
 Built and tested with:
 - Google Mobile Ads SDK version 13.0.0 (Swift package); unit tests run against 13.7.0.

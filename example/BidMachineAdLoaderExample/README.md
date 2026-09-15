@@ -10,6 +10,11 @@ placement of width 0; the BidMachine SDK holds bid payloads to the requested wid
 payload was rejected on the device and the banner never rendered. Adapter 3.7.3.0 requests the
 screen width instead.
 
+At load time Google hands the adapter the unit's primary size (240x133 here) whatever size the
+bid declared, and the SDK holds the payload to that load request. A creative wider than the
+primary size, such as 320x100, would be refused, so 3.7.3.0 loads with the screen width and the
+height left open: any payload that fits the screen loads, laid out in the view Google provides.
+
 ## Setup
 
 The project depends on the repository's Swift package, so the adapter is built from the sources

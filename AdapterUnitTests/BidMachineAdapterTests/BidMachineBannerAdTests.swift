@@ -64,6 +64,28 @@ final class BidMachineRTBBannerAdTests {
     AUTKWaitAndAssertLoadBannerAd(adapter, adConfig)
   }
 
+  @Test("RTB banner ad load requests the screen width whatever size Google chose")
+  func load_requestsScreenWidth_whateverGoogleSizeIs() async {
+    // Google sizes the load request from the unit's primary size, not from the bid; the payload
+    // describes the creative and only has to fit the screen
+    for adSize in [AdSizeBanner, AdSizeMediumRectangle, adSizeFor(cgSize: .zero)] {
+      client.bannerAdSize = nil
+      let adConfig = AUTKMediationBannerAdConfiguration()
+      adConfig.bidResponse = "test response"
+      adConfig.watermark = "test watermark".data(using: .utf8)
+      adConfig.adSize = adSize
+      let adapter = BidMachineAdapter()
+
+      AUTKWaitAndAssertLoadBannerAd(adapter, adConfig)
+      // The adapter dispatches the load in a main actor task. Yield until the task runs.
+      for _ in 0..<100 where client.bannerAdSize == nil {
+        await Task.yield()
+      }
+      #expect(client.bannerAdSize?.size.width == UIScreen.main.bounds.width)
+      #expect(client.bannerAdSize?.size.height == 0)
+    }
+  }
+
   @Test("RTB banner ad load requests the screen width when the ad size has no width")
   func load_requestsScreenWidth_whenAdSizeHasZeroWidth() async {
     let adConfig = AUTKMediationBannerAdConfiguration()
