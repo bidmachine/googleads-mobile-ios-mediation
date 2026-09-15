@@ -15,6 +15,19 @@ bid declared, and the SDK holds the payload to that load request. A creative wid
 primary size, such as 320x100, would be refused, so 3.7.3.0 loads with the screen width and the
 height left open: any payload that fits the screen loads, laid out in the view Google provides.
 
+## Choosing the sizes
+
+The Sizes button in the navigation bar picks what `validBannerSizes(for:)` answers, and reloads.
+The first entry is the primary size: Google puts it on the bid request and sizes the adapter's
+load request from it, whatever the bid declares. The presets cover the Weather Channel feed list
+with 240x133 first, the same list led by 320x50 or 300x250, a single 320x50 or 300x250, and an
+anchored or inline adaptive banner at the screen width. The console line
+`validBannerSizes asked; returning N sizes: …` shows what each load offered, and the status label
+names the active preset. A launch argument picks the preset without the UI, for example
+`xcrun simctl launch <udid> <bundle id> -sizes bannerOnly`; the names are the `SizeSet` cases:
+`weatherFeed`, `bannerFirst`, `mrecFirst`, `bannerOnly`, `mrecOnly`, `anchoredAdaptive`,
+`inlineAdaptive`.
+
 ## Setup
 
 The project depends on the repository's Swift package, so the adapter is built from the sources

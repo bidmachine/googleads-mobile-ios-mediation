@@ -40,8 +40,9 @@ final class AdLoaderBannerViewController: UIViewController {
   private let adUnitID = "/7646/app_iphone_us/thr_display/feed/feed_1"
 
   /// The sizes The Weather Channel's feed unit reports, in the order Google forwards them.
-  /// 240x133 leads, so it is the size Google puts on the bid request; 320x50 is in the list.
-  private let bannerSizes: [CGSize] = [
+  /// 240x133 leads, so it is the size Google puts on the bid request and hands the adapter at load
+  /// time; 320x50 is in the list.
+  private static let weatherFeedSizes: [CGSize] = [
     CGSize(width: 240, height: 133), CGSize(width: 300, height: 100),
     CGSize(width: 292, height: 30), CGSize(width: 300, height: 250),
     CGSize(width: 240, height: 120), CGSize(width: 320, height: 50),
@@ -51,6 +52,45 @@ final class AdLoaderBannerViewController: UIViewController {
     CGSize(width: 300, height: 31), CGSize(width: 250, height: 250),
     CGSize(width: 234, height: 60),
   ]
+
+  /// What `validBannerSizes(for:)` answers. The first entry is the primary size: Google puts it on
+  /// the bid request and sizes the adapter's load request from it, whatever the bid declares.
+  /// Picked with the Sizes button, or at launch with `-sizes <case name>`.
+  private enum SizeSet: String, CaseIterable {
+    case weatherFeed, bannerFirst, mrecFirst, bannerOnly, mrecOnly, anchoredAdaptive, inlineAdaptive
+
+    var title: String {
+      switch self {
+      case .weatherFeed: return "Weather feed: 240x133 first, 15 sizes"
+      case .bannerFirst: return "320x50 first, then the feed sizes"
+      case .mrecFirst: return "300x250 first, then the feed sizes"
+      case .bannerOnly: return "320x50 only"
+      case .mrecOnly: return "300x250 only"
+      case .anchoredAdaptive: return "Anchored adaptive, screen width"
+      case .inlineAdaptive: return "Inline adaptive, screen width"
+      }
+    }
+
+    @MainActor
+    var adSizes: [AdSize] {
+      let feed = weatherFeedSizes.map { adSizeFor(cgSize: $0) }
+      let width = UIScreen.main.bounds.width
+      switch self {
+      case .weatherFeed: return feed
+      case .bannerFirst: return [AdSizeBanner] + feed.filter { !isAdSizeEqualToSize(size1: $0, size2: AdSizeBanner) }
+      case .mrecFirst:
+        return [AdSizeMediumRectangle]
+          + feed.filter { !isAdSizeEqualToSize(size1: $0, size2: AdSizeMediumRectangle) }
+      case .bannerOnly: return [AdSizeBanner]
+      case .mrecOnly: return [AdSizeMediumRectangle]
+      case .anchoredAdaptive: return [currentOrientationAnchoredAdaptiveBanner(width: width)]
+      case .inlineAdaptive: return [currentOrientationInlineAdaptiveBanner(width: width)]
+      }
+    }
+  }
+
+  private var sizeSet =
+    UserDefaults.standard.string(forKey: "sizes").flatMap(SizeSet.init(rawValue:)) ?? .weatherFeed
 
   private var adLoader: AdLoader?
   private var bannerView: AdManagerBannerView?
@@ -91,7 +131,7 @@ final class AdLoaderBannerViewController: UIViewController {
   }
 
   private func load() {
-    statusLabel.text = "Loading \(adUnitID)…"
+    statusLabel.text = "Loading \(adUnitID)\nSizes: \(sizeSet.title)"
     bannerView?.removeFromSuperview()
     bannerView = nil
 
@@ -117,7 +157,9 @@ final class AdLoaderBannerViewController: UIViewController {
 
     let reload = UIBarButtonItem(
       title: "Reload", style: .plain, target: self, action: #selector(reloadTapped))
-    navigationItem.rightBarButtonItem = reload
+    let sizes = UIBarButtonItem(
+      title: "Sizes", style: .plain, target: self, action: #selector(sizesTapped))
+    navigationItem.rightBarButtonItems = [reload, sizes]
 
     NSLayoutConstraint.activate([
       statusLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
@@ -132,6 +174,22 @@ final class AdLoaderBannerViewController: UIViewController {
     load()
   }
 
+  /// Picks what the next loads answer to `validBannerSizes(for:)`, then reloads.
+  @objc private func sizesTapped() {
+    let sheet = UIAlertController(title: "Sizes to offer Google", message: nil, preferredStyle: .actionSheet)
+    for option in SizeSet.allCases {
+      let mark = option == sizeSet ? "✓ " : ""
+      sheet.addAction(
+        UIAlertAction(title: mark + option.title, style: .default) { [weak self] _ in
+          self?.sizeSet = option
+          self?.load()
+        })
+    }
+    sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+    sheet.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItems?.last
+    present(sheet, animated: true)
+  }
+
   private func show(_ text: String) {
     print("[AdLoaderExample] \(text)")
     statusLabel.text = text
@@ -143,8 +201,10 @@ extension AdLoaderBannerViewController: AdManagerBannerAdLoaderDelegate {
   func validBannerSizes(for adLoader: AdLoader) -> [NSValue] {
     // Google asks for this after `load` returned, so signal collection already happened without
     // any of these sizes.
-    print("[AdLoaderExample] validBannerSizes asked; returning \(bannerSizes.count) sizes")
-    return bannerSizes.map { nsValue(for: adSizeFor(cgSize: $0)) }
+    let sizes = sizeSet.adSizes
+    let listed = sizes.map { "\(Int($0.size.width))x\(Int($0.size.height))" }.joined(separator: " ")
+    print("[AdLoaderExample] validBannerSizes asked; returning \(sizes.count) sizes: \(listed)")
+    return sizes.map { nsValue(for: $0) }
   }
 
   func adLoader(_ adLoader: AdLoader, didReceive bannerView: AdManagerBannerView) {
