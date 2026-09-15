@@ -1,0 +1,314 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 60;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BM1300000000000000000000 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BM1000000000000000000000 /* AppDelegate.swift */; };
+		BM1400000000000000000000 /* AdLoaderBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BM1100000000000000000000 /* AdLoaderBannerViewController.swift */; };
+		BM2500000000000000000000 /* GoogleBidMachineAdapter in Frameworks */ = {isa = PBXBuildFile; productRef = BM2300000000000000000000 /* GoogleBidMachineAdapter */; };
+		BM2600000000000000000000 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = BM2400000000000000000000 /* GoogleMobileAds */; };
+		BM2900000000000000000000 /* BidMachine in Frameworks */ = {isa = PBXBuildFile; productRef = BM2800000000000000000000 /* BidMachine */; };
+		BM3200000000000000000000 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BM3100000000000000000000 /* SceneDelegate.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		BM0200000000000000000000 /* BidMachineAdLoaderExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BidMachineAdLoaderExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BM1000000000000000000000 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		BM1100000000000000000000 /* AdLoaderBannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdLoaderBannerViewController.swift; sourceTree = "<group>"; };
+		BM1200000000000000000000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BM3100000000000000000000 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		BM0800000000000000000000 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BM2500000000000000000000 /* GoogleBidMachineAdapter in Frameworks */,
+				BM2600000000000000000000 /* GoogleMobileAds in Frameworks */,
+				BM2900000000000000000000 /* BidMachine in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		BM0300000000000000000000 = {
+			isa = PBXGroup;
+			children = (
+				BM0400000000000000000000 /* BidMachineAdLoaderExample */,
+				BM0500000000000000000000 /* Products */,
+				BM0600000000000000000000 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		BM0400000000000000000000 /* BidMachineAdLoaderExample */ = {
+			isa = PBXGroup;
+			children = (
+				BM1000000000000000000000 /* AppDelegate.swift */,
+				BM1100000000000000000000 /* AdLoaderBannerViewController.swift */,
+				BM3100000000000000000000 /* SceneDelegate.swift */,
+				BM1200000000000000000000 /* Info.plist */,
+			);
+			path = BidMachineAdLoaderExample;
+			sourceTree = "<group>";
+		};
+		BM0500000000000000000000 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BM0200000000000000000000 /* BidMachineAdLoaderExample.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BM0600000000000000000000 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		BM0100000000000000000000 /* BidMachineAdLoaderExample */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BM1600000000000000000000 /* Build configuration list for PBXNativeTarget "BidMachineAdLoaderExample" */;
+			buildPhases = (
+				BM0700000000000000000000 /* Sources */,
+				BM0800000000000000000000 /* Frameworks */,
+				BM0900000000000000000000 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BidMachineAdLoaderExample;
+			packageProductDependencies = (
+				BM2300000000000000000000 /* GoogleBidMachineAdapter */,
+				BM2400000000000000000000 /* GoogleMobileAds */,
+				BM2800000000000000000000 /* BidMachine */,
+			);
+			productName = BidMachineAdLoaderExample;
+			productReference = BM0200000000000000000000 /* BidMachineAdLoaderExample.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BM0000000000000000000000 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					BM0100000000000000000000 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = BM1500000000000000000000 /* Build configuration list for PBXProject "BidMachineAdLoaderExample" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = BM0300000000000000000000;
+			packageReferences = (
+				BM2100000000000000000000 /* XCLocalSwiftPackageReference "../.." */,
+				BM2200000000000000000000 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
+				BM2700000000000000000000 /* XCRemoteSwiftPackageReference "BidMachine-SPM" */,
+			);
+			productRefGroup = BM0500000000000000000000 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BM0100000000000000000000 /* BidMachineAdLoaderExample */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		BM0900000000000000000000 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BM0700000000000000000000 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BM1300000000000000000000 /* AppDelegate.swift in Sources */,
+				BM1400000000000000000000 /* AdLoaderBannerViewController.swift in Sources */,
+				BM3200000000000000000000 /* SceneDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		BM1700000000000000000000 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		BM1800000000000000000000 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		BM1900000000000000000000 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = WG4VFF78ZM;
+				GAD_APPLICATION_IDENTIFIER = "ca-app-pub-1106337062030359~6003678096";
+				INFOPLIST_FILE = BidMachineAdLoaderExample/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = io.bidmachine.AdLoaderExample;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		BM2000000000000000000000 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = WG4VFF78ZM;
+				GAD_APPLICATION_IDENTIFIER = "ca-app-pub-1106337062030359~6003678096";
+				INFOPLIST_FILE = BidMachineAdLoaderExample/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = io.bidmachine.AdLoaderExample;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		BM1500000000000000000000 /* Build configuration list for PBXProject "BidMachineAdLoaderExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BM1700000000000000000000 /* Debug */,
+				BM1800000000000000000000 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BM1600000000000000000000 /* Build configuration list for PBXNativeTarget "BidMachineAdLoaderExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BM1900000000000000000000 /* Debug */,
+				BM2000000000000000000000 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		BM2100000000000000000000 /* XCLocalSwiftPackageReference "../.." */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../..;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		BM2200000000000000000000 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads.git";
+			requirement = {
+				kind = exactVersion;
+				version = 13.0.0;
+			};
+		};
+		BM2700000000000000000000 /* XCRemoteSwiftPackageReference "BidMachine-SPM" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/bidmachine/BidMachine-SPM.git";
+			requirement = {
+				kind = exactVersion;
+				version = 3.7.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		BM2300000000000000000000 /* GoogleBidMachineAdapter */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GoogleBidMachineAdapter;
+		};
+		BM2400000000000000000000 /* GoogleMobileAds */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BM2200000000000000000000 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
+			productName = GoogleMobileAds;
+		};
+		BM2800000000000000000000 /* BidMachine */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BM2700000000000000000000 /* XCRemoteSwiftPackageReference "BidMachine-SPM" */;
+			productName = BidMachine;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = BM0000000000000000000000 /* Project object */;
+}

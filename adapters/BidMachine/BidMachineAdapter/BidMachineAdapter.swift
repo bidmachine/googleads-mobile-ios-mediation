@@ -17,7 +17,7 @@ import GoogleMobileAds
 @objc(GADMediationAdapterBidMachine)
 final class BidMachineAdapter: NSObject, RTBAdapter {
 
-  private static let adapterVersionString = "3.7.2.0"
+  private static let adapterVersionString = "3.7.3.0"
 
   private static let supportedFormats: [AdFormat] = [
     .banner, .interstitial, .rewarded, .native,
@@ -35,6 +35,19 @@ final class BidMachineAdapter: NSObject, RTBAdapter {
   /// The native ad loader.
   var nativeAdLoader: NativeAdLoader?
 
+  /// Whether ad requests receive child age treatment.
+  ///
+  /// `ageRestrictedTreatment` arrived after Google Mobile Ads SDK 13.0.0, which the Swift package
+  /// pins, so the property is read dynamically: an SDK without it reports no treatment, a newer
+  /// one is honoured. The child case is `GADAgeRestrictedTreatmentChild`, raw value 1.
+  private static var isAgeRestrictedTreatmentChild: Bool {
+    let requestConfiguration = MobileAds.shared.requestConfiguration
+    guard requestConfiguration.responds(to: NSSelectorFromString("ageRestrictedTreatment")) else {
+      return false
+    }
+    return (requestConfiguration.value(forKey: "ageRestrictedTreatment") as? Int) == 1
+  }
+
   @objc static func setUp(
     with configuration: MediationServerConfiguration,
     completionHandler: @escaping GADMediationAdapterSetUpCompletionBlock
@@ -43,15 +56,15 @@ final class BidMachineAdapter: NSObject, RTBAdapter {
       let sourceId = try Util.sourceId(from: configuration)
 
       // Sets COPPA compliance based on MobileAds configuration.
+      // - If ageRestrictedTreatment is set to child, treat as COPPA-compliant (true).
       // - If either tag (TFCD or TFUA) is true, treat as COPPA-compliant (true).
       // - If either tag (TFCD or TFUA) is false (and neither is true), treat as not COPPA-compliant (false).
       // - Otherwise, leave as nil.
-
       let isChild = MobileAds.shared.requestConfiguration.tagForChildDirectedTreatment?.boolValue
       let isUnderAge = MobileAds.shared.requestConfiguration.tagForUnderAgeOfConsent?.boolValue
 
       var isCOPPA: Bool?
-      if isChild == true || isUnderAge == true {
+      if isChild == true || isUnderAge == true || Self.isAgeRestrictedTreatmentChild {
         isCOPPA = true
       } else if isChild == false || isUnderAge == false {
         isCOPPA = false
@@ -101,10 +114,12 @@ final class BidMachineAdapter: NSObject, RTBAdapter {
     for params: RTBRequestParameters,
     completionHandler: @escaping GADRTBSignalCompletionHandler
   ) {
+    let requestedAdSize = params.adSize
     Task {
       do {
         let format = try Util.adFormat(from: params)
-        let adSize: AdSize? = isAdSizeValid(size: params.adSize) ? params.adSize : nil
+        let adSize: AdSize? =
+          format == .banner ? await Util.biddingBannerAdSize(from: requestedAdSize) : nil
         let placementId = Util.placementId(from: params)
         try BidMachineClientFactory.createClient().collectSignals(
           for: format, size: adSize, placementId: placementId

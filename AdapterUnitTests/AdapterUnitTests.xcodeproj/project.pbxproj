@@ -1767,7 +1767,7 @@
 		ADA1AFCE2B2A6A1400CA4FC8 /* AUTChartboostBannerAdTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AUTChartboostBannerAdTests.m; sourceTree = "<group>"; };
 		ADA1B1E52B31036400CA4FC8 /* AUTMyTargetInterstitialAdTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AUTMyTargetInterstitialAdTests.m; sourceTree = "<group>"; };
 		ADA2FAEA2D9F7715005D9ECA /* BidMachineAdapterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BidMachineAdapterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		ADA2FAEC2D9F776B005D9ECA /* BidMachineAdapter.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BidMachineAdapter.xcodeproj; path = ../adapters/BidMachineAdapter/BidMachineAdapter.xcodeproj; sourceTree = SOURCE_ROOT; };
+		ADA2FAEC2D9F776B005D9ECA /* BidMachineAdapter.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BidMachineAdapter.xcodeproj; path = ../adapters/BidMachine/BidMachineAdapter.xcodeproj; sourceTree = SOURCE_ROOT; };
 		ADA2FBFC2D9F8C23005D9ECA /* BidMachineAdapterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidMachineAdapterTests.swift; sourceTree = "<group>"; };
 		ADA2FBFD2D9F8C5A005D9ECA /* FakeBidMachineClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeBidMachineClient.swift; sourceTree = "<group>"; };
 		ADA2FBFE2D9F8D7A005D9ECA /* BidMachineAdapterTestPlan.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = BidMachineAdapterTestPlan.xctestplan; sourceTree = "<group>"; };
