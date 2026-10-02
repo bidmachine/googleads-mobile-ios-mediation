@@ -101,10 +101,12 @@ final class BidMachineAdapter: NSObject, RTBAdapter {
     for params: RTBRequestParameters,
     completionHandler: @escaping GADRTBSignalCompletionHandler
   ) {
+    let requestedAdSize = params.adSize
     Task {
       do {
         let format = try Util.adFormat(from: params)
-        let adSize: AdSize? = isAdSizeValid(size: params.adSize) ? params.adSize : nil
+        let adSize: AdSize? =
+          format == .banner ? await Util.biddingBannerAdSize(from: requestedAdSize) : nil
         let placementId = Util.placementId(from: params)
         try BidMachineClientFactory.createClient().collectSignals(
           for: format, size: adSize, placementId: placementId

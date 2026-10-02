@@ -14,6 +14,7 @@
 
 import AdapterUnitTestKit
 import Testing
+import UIKit
 
 @testable import GoogleBidMachineAdapter
 
@@ -379,6 +380,71 @@ final class BidMachineAdapterSignalsCollectionTests {
     requestParams.configuration = configurations
     requestParams.adSize = AdSizeLeaderboard
 
+    let adapter = BidMachineAdapter()
+    await confirmation("wait for the adapter collect signals") { signalsCollectionCompleted in
+      await withCheckedContinuation { continuation in
+        adapter.collectSignals(for: requestParams) { signals, error in
+          #expect(error == nil)
+          #expect(signals != nil)
+          continuation.resume()
+        }
+      }
+      signalsCollectionCompleted()
+    }
+  }
+
+  @Test("The adapter keeps an adaptive banner ad size as is when collecting signals.")
+  func signalCollection_keepsAdSize_whenBannerAdSizeIsAdaptive() async {
+    let client = FakeBidMachineClient()
+    BidMachineClientFactory.debugClient = client
+    let adaptiveAdSize = inlineAdaptiveBanner(width: 300, maxHeight: 0)
+    let requestParams = Self.bannerRequestParameters(adSize: adaptiveAdSize)
+
+    await Self.collectSignals(with: requestParams)
+
+    let keepsSize = client.bannerAdSize.map {
+      isAdSizeEqualToSize(size1: $0, size2: adaptiveAdSize)
+    }
+    #expect(keepsSize == true)
+  }
+
+  @Test("The adapter requests the screen width when the banner ad size is invalid.")
+  func signalCollection_requestsScreenWidth_whenBannerAdSizeIsInvalid() async {
+    let client = FakeBidMachineClient()
+    BidMachineClientFactory.debugClient = client
+    let requestParams = Self.bannerRequestParameters(adSize: AdSizeInvalid)
+
+    await Self.collectSignals(with: requestParams)
+
+    #expect(client.bannerAdSize?.size.width == UIScreen.main.bounds.width)
+    #expect(client.bannerAdSize?.size.height == 0)
+  }
+
+  @Test("The adapter requests the screen width when the banner ad size has no width.")
+  func signalCollection_requestsScreenWidth_whenBannerAdSizeHasZeroWidth() async {
+    let client = FakeBidMachineClient()
+    BidMachineClientFactory.debugClient = client
+    let requestParams = Self.bannerRequestParameters(
+      adSize: adSizeFor(cgSize: CGSize(width: 0, height: 250)))
+
+    await Self.collectSignals(with: requestParams)
+
+    #expect(client.bannerAdSize?.size.width == UIScreen.main.bounds.width)
+    #expect(client.bannerAdSize?.size.height == 250)
+  }
+
+  private static func bannerRequestParameters(adSize: AdSize) -> AUTKRTBRequestParameters {
+    let credentials = AUTKMediationCredentials()
+    credentials.format = .banner
+    let configurations = AUTKRTBMediationSignalsConfiguration()
+    configurations.credentials = [credentials]
+    let requestParams = AUTKRTBRequestParameters()
+    requestParams.configuration = configurations
+    requestParams.adSize = adSize
+    return requestParams
+  }
+
+  private static func collectSignals(with requestParams: AUTKRTBRequestParameters) async {
     let adapter = BidMachineAdapter()
     await confirmation("wait for the adapter collect signals") { signalsCollectionCompleted in
       await withCheckedContinuation { continuation in

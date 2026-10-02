@@ -132,6 +132,21 @@ final class BidMachineClientImpl: NSObject, BidMachineClient {
     }
   }
 
+  /// Creates a BidMachine placement for the provided bidding ad format, forwarding the
+  /// publisher's placement ID when one was configured in the ad unit's mediation settings.
+  ///
+  /// Bidding requests use `BidMachine.AdFormat` rather than `PlacementFormat` because only the
+  /// former can describe an adaptive banner with the requested width and maximum height.
+  private static func biddingPlacement(for adFormat: BidMachine.AdFormat, placementId: String?)
+    throws -> BidMachinePlacement
+  {
+    return try BidMachineSdk.shared.placement(adFormat) { builder in
+      if let placementId {
+        builder.withPlacementId(placementId)
+      }
+    }
+  }
+
   func initialize(with sourceId: String, isCOPPA: Bool?) {
     if let isCOPPA {
       BidMachineSdk.shared.regulationInfo.populate {
@@ -146,8 +161,8 @@ final class BidMachineClientImpl: NSObject, BidMachineClient {
     for adFormat: GoogleMobileAds.AdFormat, size: AdSize?, placementId: String?,
     completionHandler: @escaping (String?) -> Void
   ) throws {
-    let placementFormat = try adFormat.toBiddingPlacementFormat(size: size)
-    let placement = try Self.placement(for: placementFormat, placementId: placementId)
+    let bidMachineAdFormat = try adFormat.toBiddingAdFormat(size: size)
+    let placement = try Self.biddingPlacement(for: bidMachineAdFormat, placementId: placementId)
     BidMachineSdk.shared.token(placement: placement) { token in
       completionHandler(token)
     }
@@ -160,9 +175,9 @@ final class BidMachineClientImpl: NSObject, BidMachineClient {
     completionHandler: @escaping (NSError?) -> Void
   ) throws {
     let bannerFormat = try size.toWaterfallPlacementFormat()
-    try loadBannerAd(
-      with: nil, placementFormat: bannerFormat, placementId: placementId, delegate: delegate,
-      watermark: nil,
+    let placement = try Self.placement(for: bannerFormat, placementId: placementId)
+    loadBannerAd(
+      with: nil, placement: placement, delegate: delegate, watermark: nil,
       completionHandler: completionHandler)
   }
 
@@ -174,22 +189,20 @@ final class BidMachineClientImpl: NSObject, BidMachineClient {
     watermark: String,
     completionHandler: @escaping (NSError?) -> Void
   ) throws {
-    let bannerFormat = try size.toBiddingPlacementFormat()
-    try loadBannerAd(
-      with: bidResponse, placementFormat: bannerFormat, placementId: placementId,
-      delegate: delegate, watermark: watermark,
+    let placement = try Self.biddingPlacement(
+      for: size.toBiddingAdFormat(), placementId: placementId)
+    loadBannerAd(
+      with: bidResponse, placement: placement, delegate: delegate, watermark: watermark,
       completionHandler: completionHandler)
   }
 
   private func loadBannerAd(
     with bidResponse: String?,
-    placementFormat: PlacementFormat,
-    placementId: String?,
+    placement: BidMachinePlacement,
     delegate: BidMachineAdDelegate,
     watermark: String?,
     completionHandler: @escaping (NSError?) -> Void
-  ) throws {
-    let placement = try Self.placement(for: placementFormat, placementId: placementId)
+  ) {
     let request = BidMachineSdk.shared.auctionRequest(placement: placement) { builder in
       if let bidResponse {
         builder.withPayload(bidResponse)
@@ -397,8 +410,9 @@ final class BidMachineClientImpl: NSObject, BidMachineClient {
 
 extension GoogleMobileAds.AdFormat {
 
-  fileprivate func toBiddingPlacementFormat(size: AdSize?) throws(BidMachineAdapterError)
-    -> PlacementFormat
+  /// Maps a Google ad format to the BidMachine ad format bidding signals are collected for.
+  fileprivate func toBiddingAdFormat(size: AdSize?) throws(BidMachineAdapterError)
+    -> BidMachine.AdFormat
   {
     switch self {
     case .banner:
@@ -407,7 +421,7 @@ extension GoogleMobileAds.AdFormat {
           errorCode: .invalidRTBRequestParameters,
           description: "Banner ad format requires ad size.")
       }
-      return try size.toBiddingPlacementFormat()
+      return size.toBiddingAdFormat()
     case .interstitial: return .interstitial
     case .rewarded: return .rewarded
     case .native: return .native
@@ -444,32 +458,21 @@ extension GoogleMobileAds.AdSize {
     }
   }
 
-  /// Maps an ad size to a BidMachine placement format for bidding requests.
-  /// Always returns one of the three supported placements based on dimensions.
-  fileprivate func toBiddingPlacementFormat() throws(BidMachineAdapterError) -> PlacementFormat {
-    // if the requested size is inline adaptive with no height restriction,
-    // the height will be specified as 0.
-    // Leaderboard size (728x90) might be used for large inline adaptive banners
-    // and fixed size leaderboard banner
-    if (self.size.height == 0 || self.size.height >= 90) && self.size.width >= 728 {
-      return .banner728x90
-      // MREC ad size (300x250) can'not be used for inline adaptive banners,
-      // only fixed MREC size is allowed
-    } else if self.size.width >= 300 && self.size.height >= 250 {
-      return .banner300x250
-      // Small banners (320x50) might be used for smaller container sizes, including adaptive inline
-      // The smallest available sizes are 212x50 and 292x41.
-      // BidMachine is using ad sizes passed from the bid request,
-      // and the SDK will rely on actual creative size that will respond to the bid request passed value.
-      // This legacy implementation with SDK-level passing ad size for bidding integration
-      // is only used on the BidMachine's backend for additional size validation
-    } else if (self.size.height == 0 && self.size.width >= 200)
-      || (self.size.height >= 40 && self.size.width >= 200)
-    {
+  /// Maps an ad size to a BidMachine ad format for bidding requests.
+  ///
+  /// The fixed banner sizes BidMachine serves - 320x50, 300x250 and 728x90 - are requested as is.
+  /// Any other size, including Google's adaptive banner sizes, is requested as an adaptive
+  /// BidMachine banner with the requested width and maximum height, and the exchange picks the
+  /// creative size. A height of 0 leaves the height unrestricted.
+  fileprivate func toBiddingAdFormat() -> BidMachine.AdFormat {
+    if isAdSizeEqualToSize(size1: self, size2: AdSizeBanner) {
       return .banner320x50
-    } else {
-      throw BidMachineAdapterError(
-        errorCode: .unsupportedBannerSize, description: "Unsupported banner size.")
+    } else if isAdSizeEqualToSize(size1: self, size2: AdSizeMediumRectangle) {
+      return .banner300x250
+    } else if isAdSizeEqualToSize(size1: self, size2: AdSizeLeaderboard) {
+      return .banner728x90
     }
+    return .bannerAdaptive(
+      width: UInt32(max(0, size.width)), maxHeight: UInt32(max(0, size.height)))
   }
 }
