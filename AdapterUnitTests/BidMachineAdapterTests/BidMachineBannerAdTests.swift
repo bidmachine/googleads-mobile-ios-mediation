@@ -15,6 +15,7 @@
 import AdapterUnitTestKit
 import BidMachine
 import Testing
+import UIKit
 import XCTest
 
 @testable import GoogleBidMachineAdapter
@@ -61,6 +62,59 @@ final class BidMachineRTBBannerAdTests {
     let adapter = BidMachineAdapter()
 
     AUTKWaitAndAssertLoadBannerAd(adapter, adConfig)
+  }
+
+  @Test("RTB banner ad load requests a fixed banner size as is")
+  func load_requestsAdSizeAsIs_whenAdSizeIsFixed() async {
+    for adSize in [AdSizeBanner, AdSizeMediumRectangle, AdSizeLeaderboard] {
+      let requestedAdSize = await loadRTBBannerAd(with: adSize)
+
+      let keepsSize = requestedAdSize.map { isAdSizeEqualToSize(size1: $0, size2: adSize) }
+      #expect(keepsSize == true)
+    }
+  }
+
+  @Test("RTB banner ad load requests the screen width for an adaptive banner size")
+  func load_requestsScreenWidth_whenAdSizeIsAdaptive() async {
+    // Google sizes the load request from the ad unit's primary size, not from the bid. The
+    // payload describes the creative and only has to fit the screen.
+    let adaptiveAdSizes = [
+      inlineAdaptiveBanner(width: 300, maxHeight: 0),
+      currentOrientationAnchoredAdaptiveBanner(width: 320),
+      adSizeFor(cgSize: CGSize(width: 240, height: 133)),
+    ]
+    for adSize in adaptiveAdSizes {
+      let requestedAdSize = await loadRTBBannerAd(with: adSize)
+
+      #expect(requestedAdSize?.size.width == UIScreen.main.bounds.width)
+      #expect(requestedAdSize?.size.height == 0)
+    }
+  }
+
+  @Test("RTB banner ad load requests the screen width when the ad size has no width")
+  func load_requestsScreenWidth_whenAdSizeHasZeroWidth() async {
+    let requestedAdSize = await loadRTBBannerAd(with: adSizeFor(cgSize: .zero))
+
+    #expect(requestedAdSize?.size.width == UIScreen.main.bounds.width)
+    #expect(requestedAdSize?.size.height == 0)
+  }
+
+  /// Loads an RTB banner ad of the provided size and returns the size the adapter requested from
+  /// the BidMachine client.
+  private func loadRTBBannerAd(with adSize: AdSize) async -> AdSize? {
+    client.bannerAdSize = nil
+    let adConfig = AUTKMediationBannerAdConfiguration()
+    adConfig.bidResponse = "test response"
+    adConfig.watermark = "test watermark".data(using: .utf8)
+    adConfig.adSize = adSize
+    let adapter = BidMachineAdapter()
+
+    AUTKWaitAndAssertLoadBannerAd(adapter, adConfig)
+    // The adapter dispatches the load in a main actor task. Yield until the task runs.
+    for _ in 0..<100 where client.bannerAdSize == nil {
+      await Task.yield()
+    }
+    return client.bannerAdSize
   }
 
   @Test("RTB banner ad load forwards the placement ID from the ad configuration")

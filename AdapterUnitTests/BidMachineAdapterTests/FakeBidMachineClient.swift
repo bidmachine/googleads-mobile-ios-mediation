@@ -31,6 +31,7 @@ final class FakeBidMachineClient: NSObject, @preconcurrency BidMachineClient {
   var sourceId: String?
   var isCOPPA: Bool?
   nonisolated(unsafe) var placementId: String?
+  nonisolated(unsafe) var bannerAdSize: AdSize?
   var shouldBidMachineSucceedCreatingRequestConfig = true
   var shouldBidMachineSucceedCreatingAd = true
   var shouldBidMachineSucceedLoadingAd = true
@@ -54,6 +55,7 @@ final class FakeBidMachineClient: NSObject, @preconcurrency BidMachineClient {
     throws
   {
     self.placementId = placementId
+    self.bannerAdSize = size
     if !FakeBidMachineClient.supportedFormats.contains(adFormat) {
       throw BidMachineAdapterError(
         errorCode: .invalidRTBRequestParameters, description: "test description.")
@@ -113,6 +115,7 @@ final class FakeBidMachineClient: NSObject, @preconcurrency BidMachineClient {
     completionHandler: @escaping (NSError?) -> Void
   ) throws {
     self.placementId = placementId
+    self.bannerAdSize = size
     if !shouldBidMachineSucceedCreatingRequestConfig {
       throw NSError(domain: "com.test.domain", code: 12345)
     }

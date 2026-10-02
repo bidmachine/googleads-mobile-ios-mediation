@@ -83,7 +83,8 @@ final class BannerAdLoader {
 
     do {
       try client.loadRTBBannerAd(
-        with: bidResponse, size: adConfiguration.adSize, delegate: self,
+        with: bidResponse, size: Util.rtbBannerLoadAdSize(from: adConfiguration.adSize),
+        delegate: self,
         placementId: Util.placementId(from: adConfiguration), watermark: watermark
       ) {
         [weak self] error in
