@@ -52,25 +52,25 @@ protocol BidMachineClient: NSObject {
 
   /// Loads a waterfall  banner ad.
   func loadWaterfallBannerAd(
-    size: AdSize, placementId: String?, delegate: BidMachineAdDelegate,
+    size: AdSize, delegate: BidMachineAdDelegate, placementId: String?,
     completionHandler: @escaping (NSError?) -> Void)
     throws
 
   /// Loads a RTB banner ad.
   func loadRTBBannerAd(
-    with bidResponse: String, size: AdSize, placementId: String?, delegate: BidMachineAdDelegate,
+    with bidResponse: String, size: AdSize, delegate: BidMachineAdDelegate, placementId: String?,
     watermark: String,
     completionHandler: @escaping (NSError?) -> Void) throws
 
   /// Loads a RTB interstitial ad.
   func loadRTBInterstitialAd(
-    with bidResponse: String, placementId: String?, delegate: BidMachineAdDelegate,
+    with bidResponse: String, delegate: BidMachineAdDelegate, placementId: String?,
     watermark: String,
     completionHandler: @escaping (NSError?) -> Void) throws
 
   /// Loads a waterfall interstitial ad.
   func loadWaterfallInterstitialAd(
-    placementId: String?, delegate: BidMachineAdDelegate,
+    delegate: BidMachineAdDelegate, placementId: String?,
     completionHandler: @escaping (NSError?) -> Void) throws
 
   /// Presents the loaded interstitial ad.
@@ -79,12 +79,12 @@ protocol BidMachineClient: NSObject {
 
   /// Loads a waterfall rewarded ad.
   func loadWaterfallRewardedAd(
-    placementId: String?, delegate: BidMachineAdDelegate,
+    delegate: BidMachineAdDelegate, placementId: String?,
     completionHandler: @escaping (NSError?) -> Void) throws
 
   /// Loads a RTB rewarded ad.
   func loadRTBRewardedAd(
-    with bidResponse: String, placementId: String?, delegate: BidMachineAdDelegate,
+    with bidResponse: String, delegate: BidMachineAdDelegate, placementId: String?,
     watermark: String,
     completionHandler: @escaping (NSError?) -> Void) throws
 
@@ -94,12 +94,12 @@ protocol BidMachineClient: NSObject {
 
   /// Loads a waterfall native ad.
   func loadWaterfallNativeAd(
-    placementId: String?, delegate: BidMachineAdDelegate,
+    delegate: BidMachineAdDelegate, placementId: String?,
     completionHandler: @escaping (NSError?) -> Void) throws
 
   /// Loads a RTB native ad.
   func loadRTBNativeAd(
-    with bidResponse: String, placementId: String?, delegate: BidMachineAdDelegate,
+    with bidResponse: String, delegate: BidMachineAdDelegate, placementId: String?,
     watermark: String,
     completionHandler: @escaping (NSError?) -> Void) throws
 }
@@ -117,13 +117,11 @@ final class BidMachineClientImpl: NSObject, BidMachineClient {
     return BidMachineSdk.sdkVersion
   }
 
-  /// Creates a BidMachine placement for the provided legacy placement format, forwarding the
-  /// publisher's placement ID when one was configured in the ad unit's mediation settings.
+  /// Creates a BidMachine placement for the provided format, forwarding the publisher's placement
+  /// ID when one was configured in the ad unit's mediation settings.
   ///
   /// BidMachine reports on the placement ID, so it must be set on every placement the adapter
   /// creates - for bid token collection as well as for ad requests.
-  ///
-  /// Used by the waterfall ad loading paths only.
   private static func placement(for format: PlacementFormat, placementId: String?) throws
     -> BidMachinePlacement
   {
@@ -134,12 +132,13 @@ final class BidMachineClientImpl: NSObject, BidMachineClient {
     }
   }
 
-  /// Creates a BidMachine placement for the provided ad format, forwarding the publisher's
-  /// placement ID when one was configured in the ad unit's mediation settings.
+  /// Creates a BidMachine placement for the provided bidding ad format, forwarding the
+  /// publisher's placement ID when one was configured in the ad unit's mediation settings.
   ///
-  /// Used by the bidding paths: signal collection and RTB ad loading.
-  private static func placement(for adFormat: BidMachine.AdFormat, placementId: String?) throws
-    -> BidMachinePlacement
+  /// Bidding requests use `BidMachine.AdFormat` rather than `PlacementFormat` because only the
+  /// former can describe an adaptive banner with the requested width and maximum height.
+  private static func biddingPlacement(for adFormat: BidMachine.AdFormat, placementId: String?)
+    throws -> BidMachinePlacement
   {
     return try BidMachineSdk.shared.placement(adFormat) { builder in
       if let placementId {
@@ -162,13 +161,8 @@ final class BidMachineClientImpl: NSObject, BidMachineClient {
     for adFormat: GoogleMobileAds.AdFormat, size: AdSize?, placementId: String?,
     completionHandler: @escaping (String?) -> Void
   ) throws {
-    if adFormat == .banner {
-      Util.log(
-        "Collecting banner signals with "
-          + (size.map { "size \(Int($0.size.width))x\(Int($0.size.height))" } ?? "no size"))
-    }
     let bidMachineAdFormat = try adFormat.toBiddingAdFormat(size: size)
-    let placement = try Self.placement(for: bidMachineAdFormat, placementId: placementId)
+    let placement = try Self.biddingPlacement(for: bidMachineAdFormat, placementId: placementId)
     BidMachineSdk.shared.token(placement: placement) { token in
       completionHandler(token)
     }
@@ -176,8 +170,8 @@ final class BidMachineClientImpl: NSObject, BidMachineClient {
 
   func loadWaterfallBannerAd(
     size: AdSize,
-    placementId: String?,
     delegate: any BidMachineAdDelegate,
+    placementId: String?,
     completionHandler: @escaping (NSError?) -> Void
   ) throws {
     let bannerFormat = try size.toWaterfallPlacementFormat()
@@ -190,13 +184,13 @@ final class BidMachineClientImpl: NSObject, BidMachineClient {
   func loadRTBBannerAd(
     with bidResponse: String,
     size: AdSize,
-    placementId: String?,
     delegate: BidMachineAdDelegate,
+    placementId: String?,
     watermark: String,
     completionHandler: @escaping (NSError?) -> Void
   ) throws {
-    let bannerFormat = size.toBiddingAdFormat()
-    let placement = try Self.placement(for: bannerFormat, placementId: placementId)
+    let placement = try Self.biddingPlacement(
+      for: size.toBiddingAdFormat(), placementId: placementId)
     loadBannerAd(
       with: bidResponse, placement: placement, delegate: delegate, watermark: watermark,
       completionHandler: completionHandler)
@@ -234,38 +228,35 @@ final class BidMachineClientImpl: NSObject, BidMachineClient {
     }
   }
   func loadWaterfallInterstitialAd(
-    placementId: String?,
     delegate: any BidMachineAdDelegate,
+    placementId: String?,
     completionHandler: @escaping (NSError?) -> Void
   ) throws {
-    let placement = try Self.placement(
-      for: PlacementFormat.interstitial, placementId: placementId)
-    loadInterstitialAd(
-      with: nil, placement: placement, delegate: delegate, watermark: nil,
+    try loadInterstitialAd(
+      with: nil, placementId: placementId, delegate: delegate, watermark: nil,
       completionHandler: completionHandler)
   }
 
   func loadRTBInterstitialAd(
     with bidResponse: String,
-    placementId: String?,
     delegate: BidMachineAdDelegate,
+    placementId: String?,
     watermark: String,
     completionHandler: @escaping (NSError?) -> Void
   ) throws {
-    let placement = try Self.placement(
-      for: BidMachine.AdFormat.interstitial, placementId: placementId)
-    loadInterstitialAd(
-      with: bidResponse, placement: placement, delegate: delegate, watermark: watermark,
+    try loadInterstitialAd(
+      with: bidResponse, placementId: placementId, delegate: delegate, watermark: watermark,
       completionHandler: completionHandler)
   }
 
   private func loadInterstitialAd(
     with bidResponse: String?,
-    placement: BidMachinePlacement,
+    placementId: String?,
     delegate: BidMachineAdDelegate,
     watermark: String?,
     completionHandler: @escaping (NSError?) -> Void
-  ) {
+  ) throws {
+    let placement = try Self.placement(for: .interstitial, placementId: placementId)
     let request = BidMachineSdk.shared.auctionRequest(placement: placement) { builder in
       if let bidResponse {
         builder.withPayload(bidResponse)
@@ -300,38 +291,35 @@ final class BidMachineClientImpl: NSObject, BidMachineClient {
   }
 
   func loadWaterfallRewardedAd(
-    placementId: String?,
     delegate: any BidMachineAdDelegate,
+    placementId: String?,
     completionHandler: @escaping (NSError?) -> Void
   ) throws {
-    let placement = try Self.placement(
-      for: PlacementFormat.rewarded, placementId: placementId)
-    loadRewardedAd(
-      with: nil, placement: placement, delegate: delegate, watermark: nil,
+    try loadRewardedAd(
+      with: nil, placementId: placementId, delegate: delegate, watermark: nil,
       completionHandler: completionHandler)
   }
 
   func loadRTBRewardedAd(
     with bidResponse: String,
-    placementId: String?,
     delegate: BidMachineAdDelegate,
+    placementId: String?,
     watermark: String,
     completionHandler: @escaping (NSError?) -> Void
   ) throws {
-    let placement = try Self.placement(
-      for: BidMachine.AdFormat.rewarded, placementId: placementId)
-    loadRewardedAd(
-      with: bidResponse, placement: placement, delegate: delegate, watermark: watermark,
+    try loadRewardedAd(
+      with: bidResponse, placementId: placementId, delegate: delegate, watermark: watermark,
       completionHandler: completionHandler)
   }
 
   private func loadRewardedAd(
     with bidResponse: String?,
-    placement: BidMachinePlacement,
+    placementId: String?,
     delegate: BidMachineAdDelegate,
     watermark: String?,
     completionHandler: @escaping (NSError?) -> Void
-  ) {
+  ) throws {
+    let placement = try Self.placement(for: .rewarded, placementId: placementId)
     let request = BidMachineSdk.shared.auctionRequest(placement: placement) { builder in
       if let bidResponse {
         builder.withPayload(bidResponse)
@@ -366,39 +354,36 @@ final class BidMachineClientImpl: NSObject, BidMachineClient {
   }
 
   func loadWaterfallNativeAd(
-    placementId: String?,
     delegate: any BidMachineAdDelegate,
+    placementId: String?,
     completionHandler: @escaping (NSError?) -> Void
   ) throws {
-    let placement = try Self.placement(
-      for: PlacementFormat.native, placementId: placementId)
-    loadNativeAd(
-      with: nil, placement: placement, delegate: delegate, watermark: nil,
+    try loadNativeAd(
+      with: nil, placementId: placementId, delegate: delegate, watermark: nil,
       completionHandler: completionHandler)
   }
 
   func loadRTBNativeAd(
     with bidResponse: String,
-    placementId: String?,
     delegate: any BidMachineAdDelegate,
+    placementId: String?,
     watermark: String,
     completionHandler: @escaping (NSError?) -> Void
   ) throws {
-    let placement = try Self.placement(
-      for: BidMachine.AdFormat.native, placementId: placementId)
-    loadNativeAd(
-      with: bidResponse, placement: placement, delegate: delegate, watermark: watermark,
+    try loadNativeAd(
+      with: bidResponse, placementId: placementId, delegate: delegate, watermark: watermark,
       completionHandler: completionHandler)
   }
 
   private func loadNativeAd(
     with bidResponse: String?,
-    placement: BidMachinePlacement,
+    placementId: String?,
     delegate: any BidMachineAdDelegate,
     watermark: String?,
     completionHandler: @escaping (NSError?) -> Void
 
-  ) {
+  ) throws {
+    let placement = try Self.placement(for: .native, placementId: placementId)
     let request = BidMachineSdk.shared.auctionRequest(placement: placement) { builder in
       if let bidResponse {
         builder.withPayload(bidResponse)
@@ -425,6 +410,7 @@ final class BidMachineClientImpl: NSObject, BidMachineClient {
 
 extension GoogleMobileAds.AdFormat {
 
+  /// Maps a Google ad format to the BidMachine ad format bidding signals are collected for.
   fileprivate func toBiddingAdFormat(size: AdSize?) throws(BidMachineAdapterError)
     -> BidMachine.AdFormat
   {
@@ -474,12 +460,19 @@ extension GoogleMobileAds.AdSize {
 
   /// Maps an ad size to a BidMachine ad format for bidding requests.
   ///
-  /// The requested size is always passed to BidMachine as an adaptive banner with the requested
-  /// width and maximum height, and the server picks the creative size. A height of 0 leaves the
-  /// height unrestricted. The width must be positive - the BidMachine SDK accepts no payload for a
-  /// width of 0 - so callers resolve the size through `Util.biddingBannerAdSize` first.
+  /// The fixed banner sizes BidMachine serves - 320x50, 300x250 and 728x90 - are requested as is.
+  /// Any other size, including Google's adaptive banner sizes, is requested as an adaptive
+  /// BidMachine banner with the requested width and maximum height, and the exchange picks the
+  /// creative size. A height of 0 leaves the height unrestricted.
   fileprivate func toBiddingAdFormat() -> BidMachine.AdFormat {
+    if isAdSizeEqualToSize(size1: self, size2: AdSizeBanner) {
+      return .banner320x50
+    } else if isAdSizeEqualToSize(size1: self, size2: AdSizeMediumRectangle) {
+      return .banner300x250
+    } else if isAdSizeEqualToSize(size1: self, size2: AdSizeLeaderboard) {
+      return .banner728x90
+    }
     return .bannerAdaptive(
-      width: UInt32(max(0, self.size.width)), maxHeight: UInt32(max(0, self.size.height)))
+      width: UInt32(max(0, size.width)), maxHeight: UInt32(max(0, size.height)))
   }
 }

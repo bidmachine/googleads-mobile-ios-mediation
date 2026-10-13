@@ -67,12 +67,21 @@ final class Util {
     return sourceId
   }
 
-  /// Resolves the banner size signals are collected with.
+  /// The banner sizes BidMachine serves as fixed-size placements. Any other size is requested as an
+  /// adaptive banner.
+  static let fixedBannerAdSizes = [AdSizeBanner, AdSizeMediumRectangle, AdSizeLeaderboard]
+
+  /// Whether the ad size is one of the fixed banner sizes BidMachine serves as is.
+  static func isFixedBannerAdSize(_ adSize: AdSize) -> Bool {
+    return fixedBannerAdSizes.contains { isAdSizeEqualToSize(size1: $0, size2: adSize) }
+  }
+
+  /// Resolves the banner size to collect bidding signals with.
   ///
-  /// Google provides no usable size for some banner units: fluid and multi-size units reach signal
-  /// collection with an invalid size. A width of 0 in the bid token leaves the exchange nothing to
-  /// auction on, so such requests are made with the screen width instead. A missing height stays
-  /// 0, which BidMachine treats as unrestricted.
+  /// Google provides no usable size for some banner ad units: fluid and multi-size ad units reach
+  /// signal collection with an invalid size. A width of 0 in the bid request leaves the exchange
+  /// nothing to auction on, so such requests are made with the screen width instead. A missing
+  /// height stays 0, which BidMachine treats as unrestricted.
   ///
   /// - Returns: The provided size when it is valid and has a positive width, otherwise a size with
   /// the screen width and the provided height, or 0 when there is none.
@@ -85,16 +94,23 @@ final class Util {
     return adSizeFor(cgSize: CGSize(width: UIScreen.main.bounds.width, height: height))
   }
 
-  /// The banner size an RTB load is made with: the screen width, the height left open.
+  /// Resolves the banner size to load an RTB banner ad with.
   ///
-  /// Google sizes the load request from the ad unit's primary size, not from the size the bid
-  /// declared, while the payload describes the creative the exchange actually built. The BidMachine
-  /// SDK holds the payload to the load request - the payload may be no wider - so a multi-size unit
-  /// whose primary size is narrower than the creative would refuse every payload. Requesting the
-  /// screen width lets any payload that fits the screen load; the ad is still laid out in the view
-  /// Google provides.
+  /// A fixed banner size is loaded as is. For any other size Google sizes the load request from
+  /// the ad unit's primary size, not from the size the bid declared, while the bid payload
+  /// describes the creative the exchange actually built. The BidMachine SDK holds the payload to
+  /// the load request - the payload may be no wider - so a multi-size ad unit whose primary size
+  /// is narrower than the creative would refuse every payload. Such ads are loaded with the screen
+  /// width and the height left open: any payload that fits the screen loads, and the ad is still
+  /// laid out in the view Google provides.
+  ///
+  /// - Returns: The provided size when it is a fixed banner size, otherwise a size with the screen
+  /// width and a height of 0.
   @MainActor
-  static func bannerLoadAdSize() -> AdSize {
+  static func rtbBannerLoadAdSize(from adSize: AdSize) -> AdSize {
+    if isFixedBannerAdSize(adSize) {
+      return adSize
+    }
     return adSizeFor(cgSize: CGSize(width: UIScreen.main.bounds.width, height: 0))
   }
 

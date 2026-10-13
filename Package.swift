@@ -17,7 +17,7 @@ let package = Package(
         ),
         .package(
             url: "https://github.com/bidmachine/BidMachine-SPM.git",
-            exact: "3.7.2"
+            exact: "3.8.2"
         ),
     ],
     targets: [

@@ -1,5 +1,23 @@
 ## BidMachine iOS Mediation Adapter Changelog
 
+#### Version 3.8.2.0
+- Distributed as a Swift package (`GoogleBidMachineAdapter`), pinned to Google Mobile Ads SDK
+  13.0.0 and BidMachine SDK 3.8.2.
+- Bidding banner requests now pass the fixed sizes 320x50, 300x250 and 728x90 to BidMachine as
+  is, and any other size, including adaptive banners, as an adaptive BidMachine banner with the
+  requested width and maximum height.
+- Fixed bidding signal collection failing with "Banner ad format requires ad size." when Google
+  provides no usable ad size (fluid and multi-size ad units). The screen width is requested
+  instead.
+- RTB banner ads of non-fixed sizes are loaded with the screen width and the height left open,
+  so a creative wider than the primary size of a multi-size ad unit is not refused on the device.
+- The `ageRestrictedTreatment` flag is forwarded to BidMachine's COPPA API on Google Mobile Ads
+  SDKs that provide it, while the adapter keeps building against 13.0.0.
+
+Built and tested with:
+- Google Mobile Ads SDK version 13.0.0 (Swift package).
+- BidMachine SDK version 3.8.2.
+
 #### Version 3.7.3.0
 - Distributed as a Swift package (`GoogleBidMachineAdapter`), pinned to Google Mobile Ads SDK
   13.0.0 and BidMachine SDK 3.7.2.

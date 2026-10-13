@@ -17,7 +17,7 @@ import GoogleMobileAds
 @objc(GADMediationAdapterBidMachine)
 final class BidMachineAdapter: NSObject, RTBAdapter {
 
-  private static let adapterVersionString = "3.7.3.0"
+  private static let adapterVersionString = "3.8.2.0"
 
   private static let supportedFormats: [AdFormat] = [
     .banner, .interstitial, .rewarded, .native,
@@ -62,7 +62,6 @@ final class BidMachineAdapter: NSObject, RTBAdapter {
       // - Otherwise, leave as nil.
       let isChild = MobileAds.shared.requestConfiguration.tagForChildDirectedTreatment?.boolValue
       let isUnderAge = MobileAds.shared.requestConfiguration.tagForUnderAgeOfConsent?.boolValue
-
       var isCOPPA: Bool?
       if isChild == true || isUnderAge == true || Self.isAgeRestrictedTreatmentChild {
         isCOPPA = true

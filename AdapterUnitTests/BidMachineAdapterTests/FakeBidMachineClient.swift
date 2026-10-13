@@ -71,7 +71,7 @@ final class FakeBidMachineClient: NSObject, @preconcurrency BidMachineClient {
   }
 
   func loadWaterfallBannerAd(
-    size: AdSize, placementId: String?, delegate: any BidMachineAdDelegate,
+    size: AdSize, delegate: any BidMachineAdDelegate, placementId: String?,
     completionHandler: @escaping (NSError?) -> Void
   ) throws {
     self.placementId = placementId
@@ -109,8 +109,8 @@ final class FakeBidMachineClient: NSObject, @preconcurrency BidMachineClient {
   func loadRTBBannerAd(
     with bidResponse: String,
     size: AdSize,
-    placementId: String?,
     delegate: any BidMachineAdDelegate,
+    placementId: String?,
     watermark: String,
     completionHandler: @escaping (NSError?) -> Void
   ) throws {
@@ -137,7 +137,7 @@ final class FakeBidMachineClient: NSObject, @preconcurrency BidMachineClient {
   }
 
   func loadWaterfallInterstitialAd(
-    placementId: String?, delegate: any BidMachine.BidMachineAdDelegate,
+    delegate: any BidMachine.BidMachineAdDelegate, placementId: String?,
     completionHandler: @escaping (NSError?) -> Void
   ) throws {
     self.placementId = placementId
@@ -166,8 +166,8 @@ final class FakeBidMachineClient: NSObject, @preconcurrency BidMachineClient {
 
   func loadRTBInterstitialAd(
     with bidResponse: String,
-    placementId: String?,
     delegate: any BidMachine.BidMachineAdDelegate,
+    placementId: String?,
     watermark: String,
     completionHandler: @escaping (NSError?) -> Void
   ) throws {
@@ -208,8 +208,8 @@ final class FakeBidMachineClient: NSObject, @preconcurrency BidMachineClient {
   }
 
   func loadWaterfallRewardedAd(
-    placementId: String?,
     delegate: any BidMachineAdDelegate,
+    placementId: String?,
     completionHandler: @escaping (NSError?) -> Void
   ) throws {
     self.placementId = placementId
@@ -236,8 +236,8 @@ final class FakeBidMachineClient: NSObject, @preconcurrency BidMachineClient {
 
   func loadRTBRewardedAd(
     with bidResponse: String,
-    placementId: String?,
     delegate: any BidMachine.BidMachineAdDelegate,
+    placementId: String?,
     watermark: String,
     completionHandler: @escaping (NSError?) -> Void
   ) throws {
@@ -277,8 +277,8 @@ final class FakeBidMachineClient: NSObject, @preconcurrency BidMachineClient {
 
   func loadRTBNativeAd(
     with bidResponse: String,
-    placementId: String?,
     delegate: any BidMachine.BidMachineAdDelegate,
+    placementId: String?,
     watermark: String,
     completionHandler: @escaping (NSError?) -> Void
   ) throws {
@@ -305,8 +305,8 @@ final class FakeBidMachineClient: NSObject, @preconcurrency BidMachineClient {
   }
 
   func loadWaterfallNativeAd(
-    placementId: String?,
     delegate: any BidMachine.BidMachineAdDelegate,
+    placementId: String?,
     completionHandler: @escaping (NSError?) -> Void
   ) throws {
     self.placementId = placementId
