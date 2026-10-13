@@ -1,5 +1,14 @@
 ## BidMachine iOS Mediation Adapter Changelog
 
+#### Version 3.8.3.0
+- The Swift package now accepts any Google Mobile Ads SDK 13.x release (`"13.0.0"..<"14.0.0"`)
+  instead of pinning 13.0.0 exactly, so apps already on 13.10 or later can resolve the adapter.
+  The adapter code is unchanged.
+
+Built and tested with:
+- Google Mobile Ads SDK versions 13.0.0 and 13.10.0 (Swift package).
+- BidMachine SDK version 3.8.2.
+
 #### Version 3.8.2.0
 - Distributed as a Swift package (`GoogleBidMachineAdapter`), pinned to Google Mobile Ads SDK
   13.0.0 and BidMachine SDK 3.8.2.
